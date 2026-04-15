@@ -105,8 +105,14 @@ Repos in play:
 ## Assets
 
 - **Mermaid diagram** in `map.adoc` — inline, uses the already-configured `@sntke/antora-mermaid-extension`
-- **Screenshots** in `environment.adoc`, stored under `content/modules/ROOT/assets/images/`:
-  - RHOAI dashboard → Data Science Projects view
+- **Screenshots** live under `content/modules/ROOT/assets/images/`, with subdirectories mirroring the source `rhai-workshops/EscalationLab` layout to preserve provenance:
+  - `00_Orientation/` — 9 PNGs covering project creation, storage config, workbench setup, terminal usage
+  - `02_Baseline/` — 9 PNGs covering the MaaS API-key and subscription workflow
+  - `03_Ingestion/page.png` — sample PDF page illustrating Docling's structure preservation
+  - `04_RAG/ragchart.png` — architectural diagram of the RAG pipeline with chunking
+- All 20 were mirrored wholesale from the source repo (total ~1 MB). Five of them (`00_Orientation/project[1-3].png`, `workbench1.png`, `storage[1-2].png`) depict **manual setup steps that no longer apply** under the fully-provisioned catalog item — kept as **archival reference only**, not for use in Showroom narrative. The 02_Baseline MaaS screenshots stay with the notebook, not in Showroom pages.
+- **Screenshots needed in `environment.adoc` that don't yet exist** (require a live provisioned env to capture — deferred to pilot):
+  - RHOAI dashboard → Data Science Projects view with the pre-created project
   - Workbench row with "Open" button
   - JupyterLab file browser showing cloned `EscalationLab/` repo
 - **No custom branding** — inherits from the RHDP Summit 2025 UI bundle already pinned in `site.yml`
