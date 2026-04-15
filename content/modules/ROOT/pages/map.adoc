@@ -1,0 +1,61 @@
+= Workshop Map
+:navtitle: Workshop Map
+
+This lab has nine hands-on notebook sections. You don't have to do them all — pick a path based on your time budget.
+
+== The escalation ladder
+
+Each rung is an increase in effort and cost. We climb only when the evidence from the rung below says we must.
+
+[mermaid]
+----
+flowchart TD
+    B["02 · Baseline<br/>stock model, no context"]
+    I["03 · Ingestion<br/>PDF → Markdown"]
+    R["04 · RAG<br/>vector search + retrieval"]
+    E1{"05 · Evaluation<br/>is RAG enough?"}
+    S["06 · Scaling<br/>multi-document corpus"]
+    ITS["07 · Inference-Time Scaling<br/>best-of-N sampling"]
+    SDG["08 · Synthetic Data Gen"]
+    FT["09 · Model Adaptation<br/>QLoRA fine-tuning"]
+    E2["10 · Comprehensive Evaluation<br/>cross-architecture"]
+
+    B --> I --> R --> E1
+    E1 -- "no, escalate" --> S --> ITS --> E1
+    E1 -- "still no" --> SDG --> FT --> E2
+    E1 -- "yes, stop" --> STOP["Ship with RAG"]
+----
+
+== Section guide
+
+[cols="1,3,1,2",options="header"]
+|===
+|Notebook | One-line outcome | Time | Depends on
+
+|`02_Baseline`        | Stock-model answers on a domain it has never seen              | ~   | —
+|`03_Ingestion`       | PDF rulebook converted to structured Markdown with Docling     | ~   | 02
+|`04_RAG`             | ChromaDB vector store + retrieval-augmented answers            | ~   | 03
+|`05_Evaluation`      | Baseline vs. RAG side-by-side, scored                          | ~   | 04
+|`06_Scaling`         | Multi-document ingestion and index growth                      | ~   | 05
+|`07_InferenceTimeScaling` | Best-of-N sampling; cost vs. quality curve                | ~   | 06
+|`08_SyntheticDataGen` | Training examples produced by SDG Hub                         | ~   | 07
+|`09_ModelAdaptation` | QLoRA fine-tune via Training Hub / Unsloth                     | ~   | 08
+|`10_ComprehensiveEvaluation` | All approaches benchmarked on the held-out set          | ~   | 09
+|===
+
+NOTE: Time estimates will be filled in after the first pilot run. The `~` placeholders are intentional; don't guess.
+
+== Recommended paths
+
+=== 90-minute tour
+Run `02_Baseline`, `04_RAG`, `05_Evaluation`, then jump to xref:synthesis.adoc[the Synthesis page]. You'll see the "is RAG enough" decision without climbing further.
+
+=== Half-day
+Everything from 02 through 07 plus xref:synthesis.adoc[Synthesis]. Adds scaling and inference-time tactics — the full "before you fine-tune" toolkit.
+
+=== Full lab
+Run 02 through 10 in order, then xref:synthesis.adoc[Synthesis]. This is what the instructor-led ~5-hour session covers.
+
+== Returning for synthesis
+
+After the last notebook you visit, come back here and open xref:synthesis.adoc[Synthesis] for the capstone discussion of what the evidence showed and how to apply it to real customer engagements.
