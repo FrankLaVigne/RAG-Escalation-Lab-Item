@@ -1,5 +1,5 @@
 name: modules
-title: Showroom Collection
+title: RAG Escalation Lab
 version: ~
 nav:
   - modules/ROOT/nav.adoc
@@ -16,3 +16,6 @@ asciidoc:
     ssh_user: lab-user
     openshift_console_url: https://console-openshift-console.apps.cluster-abc123.ocpv00.rhdp.net
     openshift_cluster_ingress_domain: apps.cluster-abc123.ocpv00.rhdp.net
+    rhoai_dashboard_url: https://rhods-dashboard-redhat-ods-applications.apps.cluster-abc123.ocpv00.rhdp.net
+    data_science_project_name: rag-escalation-lab
+    workbench_name: escalation-workbench

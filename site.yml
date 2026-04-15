@@ -1,7 +1,7 @@
 ---
 site:
-  title: Showroom Template Demo
-  url: https://github.com/rhpds/showroom_template_nookbag
+  title: RAG Escalation Lab
+  url: https://github.com/FrankLaVigne/RAG-Escalation-Lab-Item
   start_page: modules::index.adoc
 
 content:
