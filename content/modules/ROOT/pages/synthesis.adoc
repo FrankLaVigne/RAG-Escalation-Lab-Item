@@ -1,0 +1,45 @@
+= Synthesis
+:navtitle: Synthesis
+
+You have climbed the ladder. Here is what the evidence showed, and how to apply it in the field.
+
+== What the evidence showed
+
+The evaluation results from Section 10 contain a more nuanced story than pass/fail counts suggest.
+
+Starting from a baseline of 6/10, Best-of-N inference-time scaling raised the score to 8/10 by letting the model take multiple attempts and selecting the best answer. Fine-tuning with RAG also reached 8/10 — but the two approaches did not fix the same problems. Best-of-N recovered questions where the model had the capability but did not surface it on the first try. Fine-tuning recovered different questions, particularly table lookups, by changing how the model reads structured information in context. In a production system, both techniques belong in the toolbox together.
+
+The cross-architecture comparison told an equally important story. Without RAG context, four models of different sizes diverged significantly — scores ranged from 2/10 to 5/10, with the larger 8B model leading. With RAG context, all four models converged to 8/10 or 9/10. Two smaller community models (Granite 2B, Qwen2.5 3B) actually outscored the 8B model by one question. Smaller models also showed larger RAG lifts (+5 to +6 versus +3 for the 8B model), because they have less built-in knowledge to fall back on — meaning retrieval helps them more. Speed differences reinforced the practical case: the smaller models were 3–10x faster at inference, finishing 10 questions in 30–70 seconds where the 8B model needed over five minutes.
+
+The reference run also surfaced a cautionary result: the fine-tuned model regressed on one question the baseline answered correctly, introducing a specific wrong belief about spellcasters and armor. This is catastrophic forgetting at small scale, and it is exactly why evaluation on a held-out test set — compared against the baseline — is not optional. The training loss dropping from 2.93 to 2.26 (well above the <1.0 target for convergence) confirmed the model was still learning when training ended. Eight examples cannot teach a model about an entire domain; without retrieved context, the fine-tuned model scored lower than the original baseline.
+
+The takeaway for the field: when RAG is part of the deployment, smaller, cheaper, faster models can match or exceed larger ones on answer quality. Evaluation is what tells you whether your choices worked.
+
+== The escalation framework
+
+The sequence you followed in this lab is the shape of real engagement work: baseline first, ingestion next, retrieval before adaptation, evaluation before commitment. Each step produces evidence that makes the next step cheaper, faster, and less likely to fail.
+
+The framework requires that you can account for every step — including the ones you skip. "We skipped straight to fine-tuning because the customer had already proven retrieval was insufficient" is a defensible position. "We skipped straight to fine-tuning because it sounded like the right call" is not.
+
+Before touching the model, build the evaluation loop. A team with a repeatable eval set can assess a model swap in minutes. A team without one re-reads outputs by hand every time, which means changes accumulate without evidence. The questions, expected answers, and scoring logic you build become infrastructure — run them every time the system changes.
+
+The discipline behind the framework has a name: Evaluation-Driven Development. Every decision to change the system — adjusting chunk size, swapping a model, rewriting a prompt, escalating to fine-tuning — should be motivated by evaluation evidence and validated by running that evaluation again. Measure. Identify the failure. Hypothesize a cause. Make one change. Measure again.
+
+The practical ceiling of this discipline is also worth naming. GenAI evaluation is not a true/false test. It is a range metric. The real question is whether the system is operating within an acceptable range for the specific use case, risk tolerance, and user expectations of the customer in front of you. The escalation ladder helps you find that range, track it, and defend it.
+
+== When *not* to climb
+
+Anti-patterns to watch for in real engagements:
+
+* **Fine-tuning as first response.** The customer expects it; your evidence doesn't yet support it. Slow them down.
+* **Skipping evaluation between rungs.** Without a measured baseline, you can't tell whether the next rung helped.
+* **Over-indexing on a single benchmark.** If the eval set drifts from the customer's actual queries, rung gains are illusory.
+* **Ignoring inference-time tactics.** Best-of-N or tool-use can often close gaps that look like "we need to fine-tune."
+
+== Next steps
+
+* **Granite documentation:** https://www.ibm.com/granite (model family, licensing, fine-tune guidance)
+* **Red Hat OpenShift AI docs:** https://docs.redhat.com/en/documentation/red_hat_openshift_ai
+* **Docling:** https://github.com/DS4SD/docling
+* **SDG Hub / Training Hub:** see the `utils/` directory of `rhai-workshops/EscalationLab`
+* **Follow-on labs:** search the RHDP catalog for related AI / RAG items
