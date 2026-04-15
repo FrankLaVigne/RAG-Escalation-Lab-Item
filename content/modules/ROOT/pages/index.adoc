@@ -1,94 +1,44 @@
-= What is Showroom?
-:navtitle: What is Showroom?
+= RAG Escalation Lab
+:navtitle: Welcome
 
-Showroom is a web-based lab instruction platform for the https://demo.redhat.com[Red Hat Demo Platform].
-It combines rendered AsciiDoc content with embedded terminals, consoles, and interactive tools -- giving workshop and demo participants everything they need in a single browser tab.
+Your customer needs a specialist model that knows their domain cold. The obvious move — "just fine-tune it" — is expensive, slow, and often unnecessary. This lab walks you through an *escalation ladder*: start with the cheapest intervention, measure, and only climb the next rung if the evidence demands it.
 
-== What Users See
+NOTE: The guiding principle of this workshop is **escalation of effort must be justified by evidence**.
 
-When a participant opens their Showroom URL they get a split-pane interface:
+== What you'll learn
 
-* **Left pane** -- step-by-step lab instructions rendered from an https://antora.org[Antora] site you author in AsciiDoc.
-* **Right pane** -- one or more tabs such as:
-** A web terminal (SSH to a bastion, containerised CLI tools, or both).
-** The OpenShift web console embedded in an iframe.
-** A VS Code editor (Code Server).
-** A VNC desktop (noVNC).
-** Any external URL you choose.
+Every rung of the ladder is a response to a real enterprise scenario — a customer with hundreds of documents, inconsistent structure, and a model that's never seen their domain. The lab begins with a raw baseline and progresses through retrieval, inference-time scaling, synthetic data generation, and parameter-efficient fine-tuning, with evaluation at every step.
 
-The UI layout, tab names, and tab URLs are all controlled by a simple `ui-config.yml` file that lives in your content repository.
+* How to benchmark a stock LLM against a domain the model has never seen
+* When retrieval-augmented generation (RAG) is enough — and when it isn't
+* How inference-time scaling (best-of-N) compares to training-time investment
+* How to generate synthetic training data and parameter-efficiently fine-tune with QLoRA
+* How to evaluate outcomes across all these approaches and choose the right rung for a real engagement
 
-== How It Gets Deployed
+== The customer scenario
 
-This Ansible collection -- `agnosticd.showroom` -- is the primary way Showroom instances are deployed on the Red Hat Demo Platform.
-Depending on the environment type, you use one of two roles:
+The customer you're walking into has a familiar problem: hundreds of documents — PDFs, Word files, PowerPoint decks, HTML pages — accumulated over years. Many are scanned or poorly structured. They contain domain-specific language, implicit rules, and institutional knowledge baked in by people who may no longer be around.
 
-[cols="1,3",options="header"]
-|===
-|Role |Use when...
+They don't come in asking for RAG or fine-tuning. They ask something simpler and harder: *"We have all this information. How do we actually use AI with it?"*
 
-|`ocp4_workload_showroom`
-|Your lab runs on an OpenShift 4 cluster.
-The role deploys Showroom as a pod using a Helm chart, complete with content rendering, terminals, and an OpenShift `Route`.
+They've already experimented on their own. They uploaded a few documents into a chat interface, asked some questions, and got some useful answers — and enough wrong ones to lose trust. The pattern you'll hear: "It kind of works... but we can't rely on it. We can't scale this. We can't explain why it answers the way it does."
 
-|`vm_workload_showroom`
-|Your lab runs on a VM (RHEL, Fedora, etc.).
-The role deploys Showroom with rootless Podman, Traefik for TLS, and systemd for lifecycle management.
-|===
+To make the scenario concrete and hands-on, the lab uses the *Basic Fantasy RPG* rulebook as the stand-in domain corpus. It's a real, freely available document with genuine structure, rules, edge cases, and terminology — the kind of thing a model trained on general web data handles poorly without grounding. Your job is to prove (or disprove, with evidence) whether fine-tuning is actually necessary to make the model useful on it, or whether a cheaper intervention gets the customer where they need to go.
 
-Both roles follow the same basic flow:
+The customer's definition of success is not perfect answers. It's answers that are grounded in their documents, consistent across queries, and defensible to their legal, compliance, or engineering team. That framing drives every decision the lab asks you to make.
 
-. Clone your Antora content repository.
-. Inject runtime variables (credentials, hostnames, GUIDs) as AsciiDoc attributes.
-. Render the content to HTML.
-. Serve the content alongside the terminal and tab services you configured.
-. Publish the final URL back to the user.
+== Who this is for
 
-== Key Concepts
+This lab is built for *data scientists and ML engineers* comfortable with Python and JupyterLab. No prior RAG or fine-tuning experience is required — the notebooks walk through each stage end-to-end.
 
-Content repository::
-A Git repo containing your AsciiDoc lab instructions, structured as an Antora component.
-You typically fork https://github.com/rhpds/showroom_template_nookbag[showroom_template_nookbag] and add your own pages.
-See xref:content-repo.adoc[].
+== What's provisioned for you
 
-AgnosticV catalog item::
-The YAML configuration in the https://github.com/rhpds/agnosticv[agnosticv] repository that ties your content repo to an environment on the Red Hat Demo Platform.
-See xref:agnosticv-config.adoc[].
+Your Red Hat Demo Platform catalog item has already built a complete environment: OpenShift cluster, Red Hat OpenShift AI, a GPU-attached JupyterLab workbench, and the lab notebooks pre-cloned into your home directory. No setup steps — xref:environment.adoc[see Your Environment] for the short tour.
 
-User data::
-A set of key-value pairs (hostnames, passwords, URLs) written by infrastructure roles during provisioning and automatically injected into your content as Antora attributes.
-See xref:user-data.adoc[].
+== Time to complete
 
-UI configuration::
-A `ui-config.yml` file in your content repo that defines the tabs, layout width, and dynamic URLs shown alongside your lab instructions.
-See xref:ui-config.adoc[].
+Instructor-led runtime: **~5 hours**. Self-paced runtime is longer; plan for a full day if you're working through every rung.
 
-== Where to Start
+== Let's get started
 
-[cols="1,3",options="header"]
-|===
-|Goal |Page
-
-|Get a Showroom lab running quickly
-|xref:quick-start.adoc[]
-
-|Create or structure a content repo
-|xref:content-repo.adoc[]
-
-|Wire up an AgnosticV catalog item
-|xref:agnosticv-config.adoc[]
-
-|Understand the full architecture
-|xref:architecture.adoc[]
-
-|Contribute to Showroom itself
-|xref:contributing.adoc[]
-|===
-
-== Related Projects
-
-* https://github.com/agnosticd/showroom[agnosticd.showroom collection] -- this Ansible collection (you are here).
-* https://github.com/rhpds/showroom_template_nookbag[showroom_template_nookbag] -- the recommended content repo template.
-* https://github.com/rhpds/showroom-deployer[showroom-deployer] -- Helm charts that power OCP deployments.
-* https://github.com/rhpds/showroom-images[showroom-images] -- container images (content server, terminals, Antora, etc.).
-* https://github.com/rhpds/nookbag[nookbag] -- the zero-touch UI bundle.
+xref:environment.adoc[Open your environment →]
