@@ -1,34 +1,26 @@
-= Showroom Template
+= RAG Escalation Lab
 
-A template for creating Red Hat Showroom lab guides and demo content, built with https://antora.org[Antora].
+Showroom lab item wrapping the https://github.com/rhai-workshops/EscalationLab[rhai-workshops/EscalationLab] Jupyter notebook workshop, which teaches the principle that *escalation of effort must be justified by evidence* across Baseline → RAG → Inference-Time Scaling → Synthetic Data Generation → Fine-Tuning → Evaluation.
 
-* 0% cruft
-* Red Hat Demo Platform UI Bundle default
-* Dev Mode extension that displays the asciidoc attributes you have to work with
+This repo is the Showroom content artifact only. The catalog item itself (OpenShift + RHOAI + workbench provisioning) is configured in a separate AgnosticV repo.
 
-== Documentation
+== Local preview
 
-Full documentation — getting started, content structure, configuration, local development, and AI-assisted content creation — is available at:
-
-https://rhpds.github.io/showroom_template_nookbag/
-
-== Quick Start
-
-. https://github.com/rhpds/showroom_template_nookbag/generate[Create a repo from this template] (suggested naming: `<lab-name>-showroom`)
-. Clone your new repo and preview locally:
-+
 [source,sh]
 ----
-podman run --rm --name antora -v $PWD:/antora -p 8080:8080 -i -t ghcr.io/juliaaano/antora-viewer
+podman run --rm --name antora -v $PWD:/antora:z -p 8080:8080 -i -t ghcr.io/juliaaano/antora-viewer
 ----
-+
-On SELinux systems, append `:z` to the volume mount.
 
-. Edit content in `content/modules/ROOT/pages/`
-. See the https://rhpds.github.io/showroom_template_nookbag/modules/content-repo.html[Content Repository] docs for directory layout, Podman Compose with live reload, dev mode, and more.
+Open http://localhost:8080.
 
-== Create Content with AI
+== Repo layout
 
-The https://github.com/rhpds/rhdp-skills-marketplace[RHDP Skills Marketplace] provides skills for Cursor IDE and Claude Code that generate labs, demos, and validate content against Red Hat standards.
+* `content/modules/ROOT/pages/` — the four lab pages (welcome, environment, map, synthesis)
+* `content/modules/ROOT/assets/images/` — screenshots mirrored from the source notebook repo
+* `docs/superpowers/` — design spec and implementation plan
+* `site.yml`, `content/antora.yml`, `ui-config.yml` — Antora and Showroom configuration
 
-See the https://rhpds.github.io/showroom_template_nookbag/modules/content-repo.html#_creating_content_with_ai_tools[AI Tools documentation] for details.
+== Related
+
+* Source notebooks: https://github.com/rhai-workshops/EscalationLab
+* Design spec: `docs/superpowers/specs/2026-04-15-rag-escalation-showroom-design.md`
