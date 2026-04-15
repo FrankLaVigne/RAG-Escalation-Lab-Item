@@ -1,0 +1,78 @@
+= Your Environment
+:navtitle: Your Environment
+
+Everything you need is already running. This page is a quick tour so you know where to click.
+
+== What you have
+
+* **OpenShift cluster console:** {openshift_console_url}
+* **Red Hat OpenShift AI dashboard:** {rhoai_dashboard_url}
+* **Pre-created Data Science Project:** `{data_science_project_name}`
+* **Pre-configured workbench:** `{workbench_name}` — JupyterLab image with the lab's Python deps, GPU attached, disk sized for model artifacts
+* **Notebooks pre-cloned** into your workbench home directory under `~/EscalationLab/`
+
+== Opening JupyterLab
+
+. Open the RHOAI dashboard: {rhoai_dashboard_url}
+. Navigate to **Data Science Projects** → open **{data_science_project_name}**
+. In the **Workbenches** tab, find **{workbench_name}** and click **Open**
+
+// TODO-PILOT: replace with live screenshot once provisioned env is available
+// image::TODO-workbench-open.png[Workbench row with Open button,link=self,window=blank,width=700]
+
+JupyterLab opens in a new browser tab. You'll live here for the rest of the workshop.
+
+== Finding the notebooks
+
+In the JupyterLab file browser (left sidebar), open `~/EscalationLab/`. You'll see numbered directories:
+
+* `02_Baseline/` — **start here** — establishes the stock-model baseline
+* `03_Ingestion/` through `10_ComprehensiveEvaluation/` — one rung per directory
+* The `00_Orientation/` and `01_CustomerScenario/` notebooks are informational; they duplicate the Showroom pages you've already read
+
+// TODO-PILOT: replace with live screenshot of JupyterLab file browser showing EscalationLab/
+// image::TODO-jupyter-filebrowser.png[JupyterLab file browser,link=self,window=blank,width=700]
+
+== Verifying GPU access
+
+Open a JupyterLab terminal (File → New → Terminal) and run:
+
+[source,bash]
+----
+nvidia-smi
+----
+
+You should see a GPU listed (L40S or L4). If you see `command not found` or no GPU, see *Troubleshooting* below.
+
+image::00_Orientation/terminal1.png[JupyterLab terminal,link=self,window=blank,width=700]
+
+== Troubleshooting
+
+[%collapsible]
+.Workbench won't start
+====
+Check the workbench events in the RHOAI dashboard. Most often this is transient GPU-scheduling contention — wait 60 seconds and retry **Open**.
+====
+
+[%collapsible]
+.`nvidia-smi` returns "command not found"
+====
+The workbench image was started without a GPU accelerator attached. Stop the workbench, edit it, set **Accelerator** to the expected GPU profile, and restart.
+====
+
+[%collapsible]
+.Notebooks directory is missing or Git LFS files are empty
+====
+The clone-init container may have failed. Open a terminal and run:
+`cd ~ && git clone https://github.com/rhai-workshops/EscalationLab.git && cd EscalationLab && git lfs pull`
+====
+
+[%collapsible]
+.Kernel dies with out-of-memory during fine-tuning
+====
+Expected on L4 (24 GB). Either move to an L40S workbench or reduce batch size in the notebook's training config cell.
+====
+
+== Next step
+
+xref:map.adoc[See the workshop map →] to pick a path, or jump straight into `~/EscalationLab/02_Baseline/` in JupyterLab.
