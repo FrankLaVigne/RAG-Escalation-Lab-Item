@@ -37,12 +37,22 @@ In the JupyterLab file browser (left sidebar), open `~/EscalationLab/`. You'll s
 
 Open a JupyterLab terminal (File → New → Terminal) and run:
 
-[source,bash]
+[source,role="execute"]
 ----
 nvidia-smi
 ----
 
-You should see a GPU listed (L40S or L4). If you see `command not found` or no GPU, see *Troubleshooting* below.
+You should see output similar to:
+
+----
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 550.127.05             Driver Version: 550.127.05     CUDA Version: 12.8     |
+|   GPU  Name                 ...    GPU-Util  Compute M.  MIG M.                         |
+|   0    NVIDIA L40S           ...        0%      Default    Disabled                      |
++-----------------------------------------------------------------------------------------+
+----
+
+If you see `command not found` or no GPU, see *Troubleshooting* below.
 
 image::00_Orientation/terminal1.png[JupyterLab terminal,link=self,window=blank,width=700]
 
