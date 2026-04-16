@@ -9,6 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install Antora and extensions
+        run: |
+          npm install antora @sntke/antora-mermaid-extension
 
       - name: Build Antora site
         run: |
@@ -17,7 +20,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: build/site
+          path: ./www
 
   deploy:
     needs: build
