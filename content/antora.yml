@@ -1,6 +1,7 @@
 name: modules
 title: RAG Escalation Lab
 version: ~
+start_page: index.adoc
 nav:
   - modules/ROOT/nav.adoc
 
@@ -14,6 +15,7 @@ asciidoc:
     bastion_ssh_user_name: lab-user
     bastion_ssh_password: password
     ssh_user: lab-user
+    lab_name: RAG Escalation Lab
     openshift_console_url: https://console-openshift-console.apps.cluster-abc123.ocpv00.rhdp.net
     openshift_cluster_ingress_domain: apps.cluster-abc123.ocpv00.rhdp.net
     rhoai_dashboard_url: https://rhods-dashboard-redhat-ods-applications.apps.cluster-abc123.ocpv00.rhdp.net
